@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Google Photos Cleaner",
+  "version": "0.1",
+  "description": "Scan Google Photos for receipts/screenshots and open them so you can delete and free space.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "https://photos.google.com/*"
+  ],
+  "action": {
+  "default_title": "Google Photos Cleaner",
+  "default_popup": "public/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://photos.google.com/*"],
+      "js": ["public/content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "backend/background.js"
+  }
+}
