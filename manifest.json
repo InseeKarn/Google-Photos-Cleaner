@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Google Photos Cleaner",
   "version": "0.1",
-  "description": "Scan Google Photos for receipts/screenshots and open them so you can delete and free space.",
+  "description": "Automatically select photos in Google Photos.",
   "permissions": ["activeTab", "scripting"],
   "host_permissions": [
     "https://photos.google.com/*"
