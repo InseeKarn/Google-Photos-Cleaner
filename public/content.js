@@ -60,6 +60,8 @@ const deleteSelected = async () => {
     await waitUntil(() => getCount() === 0);
 };
 
+let shouldStop = false;
+
 async function deleteGooglePhotos() {
     try {
         while (true) {
@@ -67,21 +69,35 @@ async function deleteGooglePhotos() {
             if (!lastCheckbox) break;
             const { top } = lastCheckbox.getBoundingClientRect();
             await scrollPhotoListBy(top);
+
+            if (shouldStop) break;
         }
     } catch (error) {
         console.error("Error:", error);
     } finally {
-        await deleteSelected();
-        console.log("Finished deleting photos");
+        if (!shouldStop) {
+            await deleteSelected();
+            console.log("Finished deleting photos");
+        } else {
+            console.log("Stoped by User");
+        }
+
     }
 }
+
+
 
 console.log("content.js loaded");
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === 'start-select') {
-    
-    deleteGooglePhotos();
+    if (shouldStop == false) {
+        deleteGooglePhotos();
+    }
     sendResponse({ status: 'started' });
+  }
+  if (msg.action === 'stop-select') {
+    shouldStop = true;
+    sendResponse({ status: 'stopping' });
   }
   return true;
 });
